@@ -5,6 +5,7 @@
 
 # starting manager #
 	$ mysql -u admin -p < sql/isumaster.sql
+	$ npm install
 	$ node manager.js
 	$ node agent.js
 
