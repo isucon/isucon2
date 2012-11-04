@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h2 予約完了
+  会員ID:
+  span.member_id= member_id
+  で
+  span.result(data-result="success")
+    &quot;
+    span.seat= seat_id
+    &quot;の席を購入しました。

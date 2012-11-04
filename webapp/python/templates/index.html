@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1>TOP</h1>
+<ul>
+    {% for artist in artists %}
+    <li><a href="/artist/{{ artist.id }}"><span class="artist_name">{{ artist.name }}</span></a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

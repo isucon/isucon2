@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  h2 #{ ticket.artist_name } : #{ ticket.name }
+  ul
+    each variation in variations
+      li.variation
+        form(method="POST", action="/buy")
+          input(type="hidden", name="ticket_id", value="#{ ticket.id }")
+          input(type="hidden", name="variation_id", value="#{ variation.id }")
+          span.variation_name= variation.name
+          &nbsp;残り
+          span.vacancy(id="vacancy_#{ variation.id }") #{ variation.vacancy }
+          席
+          input(type="text", name="member_id", value="")
+          input(type="submit", value="購入")
+  h3 席状況
+    each variation in variations
+      h4= variation.name
+      table.seats(data-variationid="#{ variation.id }")
+        - var array = Array.apply(null, Array(64)).map(function (undefined, i) { return i < 10 ? '0' + i : String(i) })
+        each row in array
+          tr
+            each col in array
+              - var key = row + '-' + col
+              td(id="#{ key }", class="#{ variation.stock[key].order_id ? 'unavailable' : 'available' }")

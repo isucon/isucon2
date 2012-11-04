@@ -1,0 +1,8 @@
+target/classes/data/
+target/classes/db.properties
+target/classes/isucon2/model/LatestInfo.class
+target/classes/root.xml
+target/classes/view/
+target/isucon2.war
+target/isucon2/
+target/maven-archiver/

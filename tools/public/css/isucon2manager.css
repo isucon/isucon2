@@ -1,0 +1,45 @@
+a#notification {
+    color: #e0b0b0;
+    font-weight: bold;
+}
+
+div.teamsbox {
+    height: 110px;
+    margin: 5px;
+    margin-top: 10px;
+    background-color: #e0e0e0;
+    text-align: center;
+    font-size: small;
+    cursor:pointer;
+}
+div.topteam {
+    background-color: yellow;
+}
+div.highlevel {
+    color: blue;
+}
+div.team_name {
+    font-size: medium;
+    font-weight: bold;
+}
+div.result_tickets,div.result_score {
+    font-size: medium;
+    font-weight: bold;
+}
+div.result_failed {
+    color: red;
+}
+div.result_running {
+    color: blue;
+}
+
+div.control {
+    margin-left: 20px;
+    padding: 5px;
+    background-color: #b0b0e0;
+}
+
+table.ranks {
+    width: 100%;
+    border-width: 10px;
+}

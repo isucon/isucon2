@@ -1,0 +1,15 @@
+{
+    "manager": {
+        "skip": false,
+        "address": "125.6.152.241",
+        "port": 5001
+    },
+    "agent": {
+        "port": 5002
+    },
+    "slots": {
+        "primary": 30,
+        "secondary": 2
+    },
+    "testing": false
+}

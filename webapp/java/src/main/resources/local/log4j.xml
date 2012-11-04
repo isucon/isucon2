@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+<!-- console -->
+	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} [%-5p] (%F:%L) - %m%n"/>
+		</layout>
+	</appender>
+
+<!-- null -->
+	<appender name="NULL" class="org.apache.log4j.varia.NullAppender">
+		<param name="threshold" value="INFO" />
+	</appender>
+
+    <root>
+    	<priority value="INFO" />
+        <appender-ref ref="STDOUT" />
+    </root>
+    
+</log4j:configuration>

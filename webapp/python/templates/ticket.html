@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>{{ ticket.artist_name }} : {{ ticket.name }}</h2>
+<ul>
+    {% for variation in variations %}
+<li class="variation">
+  <form method="POST" action="/buy">
+    <input type="hidden" name="ticket_id" value="{{ ticket.id }}">
+    <input type="hidden" name="variation_id" value="{{ variation.id }}">
+    <span class="variation_name">{{ variation.name }}</span> 残り<span class="vacancy" id="vacancy_{{ variation.id }}">{{ variation.vacancy }}</span>席
+    <input type="text" name="member_id" value="">
+    <input type="submit" value="購入">
+  </form>
+</li>
+    {% endfor %}
+</ul>
+
+<h3>席状況</h3>
+{% for variation in variations %}
+{% set stock = variation.stock %}
+<h4>{{ variation.name }}</h4>
+<table class="seats" data-variationid="{{ variation.id }}">
+    {% for row in range(64) %}
+  <tr>
+      {% for col in range(64) %}
+      {% set key = "%02d-%02d" % (row, col) %}
+    <td id="{{ key }}" class="{% if stock[key] %}unavailable{% else %}available{% endif %}"></td>
+      {% endfor %}
+  </tr>
+    {% endfor %}
+</table>
+{% endfor %}
+
+{% endblock %}

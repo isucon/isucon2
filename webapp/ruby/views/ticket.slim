@@ -1,0 +1,23 @@
+h2= ticket['artist_name'] + ' : ' + ticket['name']
+ul
+  - variations.each do |variation|
+    li.variation
+      form method="POST" action="/buy"
+        input type="hidden" name="ticket_id" value="#{ ticket['id'] }"
+        input type="hidden" name="variation_id" value="#{ variation['id'] }"
+        span.variation_name= variation['name']
+        |  残り
+        span.vacancy id="vacancy_#{ variation['id'] }"= variation['count']
+        | 席 
+        input type="text" name="member_id" value=""
+        input type="submit" value="購入"
+h3 席状況
+- variations.each do |variation|
+  - stock = variation['stock']
+  h4= variation['name']
+  table.seats data-variationid="#{ variation['id'] }"
+    - ("00".."63").each do |row|
+      tr
+         - ("00".."63").each do |col|
+           - key = row + '-' + col
+           td id="#{ key }" class="#{ stock[key] ? 'unavailable' : 'available' }"

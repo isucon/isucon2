@@ -1,0 +1,8 @@
+h2= artist['name']
+ul
+  - tickets.each do |ticket|
+    li.ticket
+      a href="/ticket/#{ ticket['id'] }"= ticket['name']
+      | 残り
+      span.count= ticket['count']
+      | 枚

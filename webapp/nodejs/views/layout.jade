@@ -1,0 +1,25 @@
+!!! html
+html
+  head
+    title isucon 2
+    meta(charset="utf-8")
+    link(type="text/css", rel="stylesheet", href="/css/ui-lightness/jquery-ui-1.8.24.custom.css")
+    link(type="text/css", rel="stylesheet", href="/css/isucon2.css")
+    script(type="text/javascript", src="/js/jquery-1.8.2.min.js")
+    script(type="text/javascript", src="/js/jquery-ui-1.8.24.custom.min.js")
+    script(type="text/javascript", src="/js/isucon2.js")
+  body
+    header
+      a(href="/")
+        img(src="/images/isucon_title.jpg")
+    #sidebar
+      if locals.recent_sold
+        table
+          tr
+            th(colspan="2") 最近購入されたチケット
+          each item in recent_sold
+            tr
+              td.recent_variation= [item.a_name, item.t_name, item.v_name].join(' ')
+              td.recent_seat_id= item.seat_id
+    #content
+      block content

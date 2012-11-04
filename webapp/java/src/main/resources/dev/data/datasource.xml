@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<!-- <tx:annotation-driven /> <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"> 
+		<property name="dataSource" ref="dataSource" /> </bean> -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:db.properties</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="username" value="${db.master.jdbc.username}" />
+		<property name="password" value="${db.master.jdbc.password}" />
+		<property name="url" value="${db.master.jdbc.url}" />
+		<property name="driverClassName" value="${db.master.jdbc.driverClassName}" />
+		<property name="initialSize" value="${db.master.jdbc.initialSize}" />
+		<property name="maxActive" value="${db.master.jdbc.maxActive}" />
+		<property name="maxIdle" value="${db.master.jdbc.maxIdle}" />
+		<property name="minIdle" value="${db.master.jdbc.minIdle}" />
+		<property name="maxWait" value="${db.master.jdbc.maxWait}" />
+		<property name="validationQuery" value="${db.master.jdbc.validationQuery}" />
+		<property name="testOnBorrow" value="${db.master.jdbc.testOnBorrow}" />
+		<property name="testOnReturn" value="${db.master.jdbc.testOnReturn}" />
+		<property name="testWhileIdle" value="${db.master.jdbc.testWhileIdle}" />
+		<property name="timeBetweenEvictionRunsMillis"
+			value="${db.master.jdbc.timeBetweenEvictionRunsMillis}" />
+		<property name="numTestsPerEvictionRun" value="${db.master.jdbc.numTestsPerEvictionRun}" />
+		<property name="minEvictableIdleTimeMillis" value="${db.master.jdbc.minEvictableIdleTimeMillis}" />
+		<property name="defaultAutoCommit" value="false" />
+	</bean>
+
+	<bean id="queryRunner" class="isucon2.dbutil.QueryRunnerWrapper">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="initializer" class="isucon2.dbutil.admin.Initializer">
+		<property name="queryRunner" ref="queryRunner" />
+		<property name="filename" value="/sql/initial_data.sql" />
+	</bean>
+</beans>

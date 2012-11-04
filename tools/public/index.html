@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<title>Enjoy ISUCON2!</title>
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/isucon2manager.css" rel="stylesheet">
+</head>
+<body>
+<!-- Modal -->
+<div class="navbar navbar-fixed-top navbar-inverse">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">Enjoy ISUCON2!</a>
+      <ul class="nav">
+        <!-- notification message here (and timeout disappearing) -->
+        <li><a href="#" id="notification"></a></li>
+      </ul>
+      <ul id="loggedin_box" class="nav pull-right">
+        <li><a href="#" id="username">team01</a></li>
+        <li><a href="#" id="logoutAction">logout</a></li>
+      </ul>
+      <form id="login_box" class="navbar-form pull-right">
+        <input name="username" type="text" class="input-small" placeholder="user">
+        <input name="password" type="password" class="input-small" placeholder="pass">
+        <button id="loginSubmit" class="btn">login</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<br /><br />
+
+<div class="container">
+  <div class="row">
+
+    <div class="modal hide fade" id="errorModal" style="display: none;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Latest Bench Error Details</h3>
+      </div>
+      <div class="modal-body">
+        <ul class="errors">
+          <!-- fill errors one by one line -->
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      </div>
+    </div>
+    <div class="modal hide fade" id="rankingModal" style="display: none;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Team Ranking of Latest Bench</h3>
+      </div>
+      <div class="modal-body">
+        <table class="ranks">
+          <!-- fill teams one by one line -->
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      </div>
+    </div>
+
+    <div class="span10" id="teams">
+      <!-- teams by template extraction -->
+    </div>
+    <div class="span2">
+      <div class="row">
+        <h4>Selected Team</h4>
+        <div id="teamdetail">
+          <!-- teamdetail by teamplate extraction -->
+        </div>
+      </div>
+      <div class="row">
+        <h4>Controls</h4>
+        <button id="btn_bench_start" class="btn btn-small btn-primary" type="button">Start Benchmark</button><br />
+        <button id="btn_latest_errors" class="btn btn-small" type="button">Latest Errors</button><br />
+        <button id="btn_kill_bench" class="btn btn-small btn-warning" type="button">Kill Benchmark</button><br />
+        <!-- for management only -->
+        <button id="btn_show_ranking" class="btn btn-small btn-success" type="button">Show Ranking</button><br />
+        <button id="btn_toggle_restricted" class="btn btn-small btn-danger" type="button">Toggle Restricted</button>
+        <!-- for management only -->
+      </div>
+      <div class="row">
+        <h4>Agents Status</h4>
+        <div id="agents">
+          <!-- agents by template extraction -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="js/jquery.tmpl.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/isucon2manager.js"></script>
+</body>
+</html>

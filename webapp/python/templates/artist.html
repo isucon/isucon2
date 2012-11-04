@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>{{ artist.name }}</h2>
+<ul>
+    {% for ticket in tickets %}
+<li class="ticket">
+<a href="/ticket/{{ ticket.id }}">{{ ticket.name }}</a>残り<span class="count">{{ ticket.count }}</span>枚
+</li>
+    {% endfor %}
+</ul>
+{% endblock %}

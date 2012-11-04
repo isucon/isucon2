@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h2= artist.name
+  ul
+    each ticket in tickets
+      li.ticket
+        a(href="/ticket/#{ ticket.id }")= ticket.name
+        残り
+        span.count #{ ticket.count }
+        枚

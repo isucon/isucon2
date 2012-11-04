@@ -1,0 +1,16 @@
+Listen 0.0.0.0:5000
+NameVirtualHost 0.0.0.0:5000
+
+<Directory /home/isucon/app/php>
+    Options FollowSymLinks
+    AllowOverride All
+    Order deny,allow
+    Allow from all
+</Directory>
+
+<VirtualHost 0.0.0.0:5000>
+    ServerName localhost
+    SetEnv ISUCON_ENV production
+    DocumentRoot /home/isucon/app/php
+    DirectoryIndex index.php
+</VirtualHost>
