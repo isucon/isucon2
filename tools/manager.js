@@ -162,7 +162,7 @@ app.post('/bench/:teamid', function(req,res){
   }
   var slotNum = benchSlots();
   if (selectAgents(slotNum) === null) {
-    res.send(403, 'Available slots too few'); return;
+    res.send(403, 'Available slots too few: ' + slotNum + " please update agent's slots or start more agents." ); return;
   }
 
   var benchid = generateBenchId();
