@@ -8,8 +8,8 @@
         "port": 5002
     },
     "slots": {
-        "primary": 4,
-        "secondary": 1
+        "primary": 30,
+        "secondary": 2
     },
     "testing": false
 }

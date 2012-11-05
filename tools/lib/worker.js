@@ -201,7 +201,7 @@ Worker.prototype.getVariations = function(ticket_id, getStatus, callback) {
         return {name:variation_name, id:variation_id, count:vacancy_count, status:(statusMap[variation_id] || {})};
       });
     } else {
-      var formRegexp = /<form.*action="\/buy".*>/ig;
+      var formRegexp = /<form.*action="\/buy".*/ig;
       var formEndRegexp = /<\/form>/ig;
       var nameRegexp = /<span [^>]*class="variation_name"[^>]*>(.+)<\/span>.*<span [^>]*class="vacancy"[^>]*>(\d+)<\/span>/im;
       var idRegexp = /<input [^>]*name="variation_id"[^>]*>/im;

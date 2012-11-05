@@ -173,7 +173,7 @@ Buyer.prototype.execute = function(target_ip, target_port, target_artist, target
   var routines = new Array(this.parallels);
   for(var i = 0 ; i < this.parallels ; i++) {
     routines[i] = function(cb){ setTimeout(
-      function(){ self.loop(start, target_ip, target_port, target_artist, target_ticket, seconds, cb); },
+      self.loop(start, target_ip, target_port, target_artist, target_ticket, seconds, cb),
       Math.floor(Math.random() * this.parallels) * start_timing_interval_unit
     ); };
   }
