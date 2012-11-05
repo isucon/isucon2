@@ -80,7 +80,7 @@ def top_page():
     recent_sold = get_recent_sold()
     return render_template('index.html', artists=artists, recent_sold=recent_sold)
 
-@app.route("/artist/<artist_id>")
+@app.route("/artist/<int:artist_id>")
 def artist_page(artist_id):
     cur = get_db().cursor()
 
@@ -108,7 +108,7 @@ def artist_page(artist_id):
         recent_sold=get_recent_sold()
     )
 
-@app.route("/ticket/<ticket_id>")
+@app.route("/ticket/<int:ticket_id>")
 def ticket_page(ticket_id):
     cur = get_db().cursor()
     
@@ -149,7 +149,7 @@ def ticket_page(ticket_id):
 
 @app.route("/buy", methods=['POST'])
 def buy_page():
-    variation_id = request.values['variation_id']
+    variation_id = int(request.values['variation_id'])
     member_id = request.values['member_id']
 
     db = get_db()
