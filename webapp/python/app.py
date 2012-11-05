@@ -9,7 +9,7 @@ except ImportError:
     from pymysql.cursors import DictCursor
 
 from flask import (
-        lask, request, redirect,
+        Flask, request, redirect,
         render_template, _app_ctx_stack, Response
         )
 
@@ -40,9 +40,9 @@ def init_db():
     print "Initializing database"
     with connect_db() as cur:
         with open('../config/database/initial_data.sql') as fp:
-            for line in fp.readlines():
+            for line in fp:
                 line = line.strip()
-                if len(line) > 0:
+                if line:
                     cur.execute(line)
 
 def get_recent_sold():
@@ -154,7 +154,6 @@ def buy_page():
 
     db = get_db()
     cur = db.cursor()
-    cur.execute('BEGIN')
     cur.execute(
         'INSERT INTO order_request (member_id) VALUES (%s)',
         (member_id)
@@ -170,10 +169,10 @@ def buy_page():
             (order_id)
         );
         stock = cur.fetchone()
-        cur.execute('COMMIT')
+        db.commit()
         return render_template('complete.html', seat_id=stock['seat_id'], member_id=member_id)
     else:
-        cur.execute('ROLLBACK')
+        db.rollback()
         return render_template('soldout.html')
 
 @app.route("/admin", methods=['GET', 'POST'])
