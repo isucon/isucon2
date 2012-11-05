@@ -1,13 +1,17 @@
 # sudo aptitude install -y python-flask python-mysqldb python-routes
 from __future__ import with_statement
 
-from wsgiref.simple_server import make_server
+try:
+    import MySQLdb
+    from MySQLdb.cursors import DictCursor
+except ImportError:
+    import pymysql as MySQLdb
+    from pymysql.cursors import DictCursor
 
-import MySQLdb
-from MySQLdb.cursors import DictCursor 
-
-from flask import Flask, request, g, redirect, \
-             render_template, _app_ctx_stack, Response
+from flask import (
+        Flask, request, redirect,
+        render_template, _app_ctx_stack, Response
+        )
 
 import json, os
 
@@ -36,9 +40,9 @@ def init_db():
     print "Initializing database"
     with connect_db() as cur:
         with open('../config/database/initial_data.sql') as fp:
-            for line in fp.readlines():
+            for line in fp:
                 line = line.strip()
-                if len(line) > 0:
+                if line:
                     cur.execute(line)
 
 def get_recent_sold():
@@ -76,7 +80,7 @@ def top_page():
     recent_sold = get_recent_sold()
     return render_template('index.html', artists=artists, recent_sold=recent_sold)
 
-@app.route("/artist/<artist_id>")
+@app.route("/artist/<int:artist_id>")
 def artist_page(artist_id):
     cur = get_db().cursor()
 
@@ -104,7 +108,7 @@ def artist_page(artist_id):
         recent_sold=get_recent_sold()
     )
 
-@app.route("/ticket/<ticket_id>")
+@app.route("/ticket/<int:ticket_id>")
 def ticket_page(ticket_id):
     cur = get_db().cursor()
     
@@ -145,12 +149,11 @@ def ticket_page(ticket_id):
 
 @app.route("/buy", methods=['POST'])
 def buy_page():
-    variation_id = request.values['variation_id']
+    variation_id = int(request.values['variation_id'])
     member_id = request.values['member_id']
 
     db = get_db()
     cur = db.cursor()
-    cur.execute('BEGIN')
     cur.execute(
         'INSERT INTO order_request (member_id) VALUES (%s)',
         (member_id)
@@ -166,10 +169,10 @@ def buy_page():
             (order_id)
         );
         stock = cur.fetchone()
-        cur.execute('COMMIT')
+        db.commit()
         return render_template('complete.html', seat_id=stock['seat_id'], member_id=member_id)
     else:
-        cur.execute('ROLLBACK')
+        db.rollback()
         return render_template('soldout.html')
 
 @app.route("/admin", methods=['GET', 'POST'])
