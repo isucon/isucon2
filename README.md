@@ -1,6 +1,19 @@
 # ISUCON 2 #
 
-CAUTION: this project is open for only #isucon administrators
+- by sugyan
+  - /webapp/perl
+  - /webapp/ruby
+  - /webapp/nodejs
+- by faultier
+  - /webapp/php
+- by just\_do\_neet
+  - /webapp/java
+- by xxxxxx
+  - /webapp/python
+- by tagomoris
+  - /tools
+
+And many many patches by kazeburo.
 
 ## web app ##
 
