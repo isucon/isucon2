@@ -1,13 +1,17 @@
 # sudo aptitude install -y python-flask python-mysqldb python-routes
 from __future__ import with_statement
 
-from wsgiref.simple_server import make_server
+try:
+    import MySQLdb
+    from MySQLdb.cursors import DictCursor
+except ImportError:
+    import pymysql as MySQLdb
+    from pymysql.cursors import DictCursor
 
-import MySQLdb
-from MySQLdb.cursors import DictCursor 
-
-from flask import Flask, request, g, redirect, \
-             render_template, _app_ctx_stack, Response
+from flask import (
+        lask, request, redirect,
+        render_template, _app_ctx_stack, Response
+        )
 
 import json, os
 
