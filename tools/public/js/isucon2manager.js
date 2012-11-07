@@ -20,7 +20,7 @@ $(function(){
     return false;
   });
   $.get('/session?t=' + (new Date()).getTime(), function(data){
-    if (data) {
+    if (data && data.username) {
       loginUser = data;
       $('#username').text(data.username);
       $('#login_box').hide(); $('#loggedin_box').show();
