@@ -3,7 +3,7 @@ var async = require('async'),
     util = require('util'),
     fs = require('fs'),
     http = require('http');
-
+http.globalAgent.maxSockets = 30;
 var express = require('express'),
     app = express();
 
@@ -401,9 +401,9 @@ function postBenchRequest(agent, benchid, sessionid, callback){
     headers: headers,
     method: 'POST'
   };
-  var timeouted = false;
+  var finished = false;
   var req = http.request(options, function(res){
-    if (timeouted) { return; }
+    finished = true;
     if (res.statusCode !== 200) {
       /* select other agent */
       callback({message:'agent returns error code:' + res.statusCode}); return;
@@ -415,7 +415,11 @@ function postBenchRequest(agent, benchid, sessionid, callback){
   req.on('error', function(err){
     callback({message:(err.message || 'request to agent failed with error:' + JSON.stringify(err))});
   });
-  req.setTimeout(BENCH_AGENT_TIMEOUT, function(){ timeouted = true; callback({message:'requeest to agent failed by timeout'}); });
+  req.on('timeout', function () {
+    if ( finished ) { return }
+    req.abort();
+  });
+  req.setTimeout(BENCH_AGENT_TIMEOUT);
   req.end();
 };
 
@@ -434,9 +438,9 @@ function killBenchRequest(agent, sessionid, callback){
     headers: headers,
     method: 'POST'
   };
-  var timeouted = false;
+  var finished = false;
   var req = http.request(options, function(res){
-    if (timeouted) { return; }
+    finished = true;
     if (res.statusCode !== 200) {
       /* select other agent */
       callback({message:'agent returns error code:' + res.statusCode}); return;
@@ -446,7 +450,11 @@ function killBenchRequest(agent, sessionid, callback){
   req.on('error', function(err){
     callback({message:(err.message || 'request to agent failed with error:' + JSON.stringify(err))});
   });
-  req.setTimeout(BENCH_AGENT_TIMEOUT, function(){ timeouted = true; callback({message:'requeest to agent failed by timeout'}); });
+  req.on('timeout', function () {
+    if ( finished ) { return }
+    req.abort();
+  });
+  req.setTimeout(BENCH_AGENT_TIMEOUT);
   req.end();
 };
 
