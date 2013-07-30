@@ -261,6 +261,7 @@ app.post('/result', function(req,res){
       sessionid = req.body.sessionid,
       result = req.body.result;
   if (! runnings[benchid]) { res.send(404, 'Target benchid not found:' + benchid); return; }
+  if (! runnings[benchid].sessions[sessionid]) { res.send(404, 'Target sessionid not found:' + sessionid); return; }
   runnings[benchid].sessions[sessionid].result = result;
 
   res.send(200, 'OK');
@@ -415,7 +416,7 @@ function postBenchRequest(agent, benchid, sessionid, callback){
   req.on('error', function(err){
     callback({message:(err.message || 'request to agent failed with error:' + JSON.stringify(err))});
   });
-  req.setTimeout(BENCH_AGENT_TIMEOUT, function(){ timeouted = true; callback({message:'requeest to agent failed by timeout'}); });
+  req.setTimeout(BENCH_AGENT_TIMEOUT, function(){ timeouted = true; callback({message:'request to agent failed by timeout'}); });
   req.end();
 };
 
@@ -465,6 +466,9 @@ function killRunningSessions(bench, callback){
 
       var agent = session.agent;
       return function(cb){
+        if (! agent) {
+          cb(null); return;
+        }
         killBenchRequest(agent, sid, function(err){
           if (err) { /* agent down or timeout....*/
             callback(null, {
