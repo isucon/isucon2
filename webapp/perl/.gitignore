@@ -1,5 +1,4 @@
 Makefile
 MYMETA.*
 META.*
-inc/
 extlib/

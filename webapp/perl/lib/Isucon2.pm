@@ -8,6 +8,8 @@ use Kossy;
 use DBIx::Sunny;
 use JSON 'decode_json';
 
+our $VERSION = '0.01';
+
 sub load_config {
     my $self = shift;
     $self->{_config} ||= do {
