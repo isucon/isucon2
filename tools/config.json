@@ -1,10 +1,10 @@
 {
     "testing": false,
     "teams": [
-        { "id": 1, "name": "local", "display":"TestTeam<br />localhost", "target_ip": "127.0.0.1", "target_port": 5000 },
+        { "id": 1, "name": "local", "display":"TestTeam<br />localhost", "target_ip": "127.0.0.1", "target_port": 5000 }
     ],
     "users": [
         {"name":"manager","password":"foo","teams":[],"admin":true},
-        {"name":"team1","password":"xxx","teams":[1]},
+        {"name":"team1","password":"xxx","teams":[1]}
     ]
 }
