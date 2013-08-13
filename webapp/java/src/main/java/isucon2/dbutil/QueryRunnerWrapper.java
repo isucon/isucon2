@@ -1,5 +1,6 @@
 package isucon2.dbutil;
 
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -26,10 +27,10 @@ public class QueryRunnerWrapper {
 		return dataSource.getConnection();
 	}
 
-	public Long getLastInsertId(Connection conn) throws SQLException {
+	public BigInteger getLastInsertId(Connection conn) throws SQLException {
 		QueryRunner run = new QueryRunner();
 		return run.query(conn, "SELECT LAST_INSERT_ID();",
-				new ScalarHandler<Long>());
+				new ScalarHandler<BigInteger>());
 	}
 
 	public <T> List<T> queryForList(String basequery, Class<T> resulthint)

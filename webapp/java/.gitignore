@@ -6,3 +6,4 @@ target/classes/view/
 target/isucon2.war
 target/isucon2/
 target/maven-archiver/
+/target

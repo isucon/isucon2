@@ -8,6 +8,7 @@ import isucon2.model.Ticket;
 import isucon2.model.Variation;
 import isucon2.model.OrderRequest;
 
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -87,7 +88,7 @@ public class ImpliesDao {
 			queryRunner.update(conn,
 					"INSERT INTO order_request (member_id) VALUES (?)",
 					memberId);
-			Long orderId = queryRunner.getLastInsertId(conn);
+			BigInteger orderId = queryRunner.getLastInsertId(conn);
 			int row = queryRunner
 					.update(conn,
 							"UPDATE stock SET order_id = ? WHERE variation_id = ? AND order_id IS NULL ORDER BY RAND() LIMIT 1",

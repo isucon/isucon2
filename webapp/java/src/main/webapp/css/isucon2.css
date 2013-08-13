@@ -1,0 +1,18 @@
+body {margin: 0 auto 0 auto; min-width: 980px; max-width: 980px; width: 98%;font-family:sans-serif;}
+img {border: none;}
+.vacancy {color: blue;font-weight: bold;}
+table {border-right: 1px solid gray; border-top: 1px solid gray; border-spacing: 0; font-size: 12px; margin-top: 10px;}
+table tr td, table tr th {border-left: 1px solid gray; border-bottom: 1px solid gray; padding: 4px;}
+table tr td.available {background-color: #60FF60;}
+table tr td.unavailable {background-color: #FF6060;}
+
+span.member_id {font-weight: bold; padding: 2px;}
+
+#mainview {margin: 10px;}
+
+#sidebar {width: 250px; float: left; position: relative;}
+#content {width: 700px; float: right; position: relative;}
+
+#sidebar table {width: 90%;}
+#sidebar table tr td {margin: 0; padding: 2px; border-bottom: 1px solid gray;}
+#sidebar table tr td.recent_seat_id {text-align: center; width: 3em;}
