@@ -21,8 +21,10 @@ var TICKETS = 8192,
 var BENCH_SETTINGS = {
   testing: {
     starter:  {parallels:1,  timeout:30, procs:1},
-    httpload: {parallels:50, timeout:BENCH_SECONDS_SHORT, procs:2},
-    buyer:    {parallels:25, timeout:BENCH_SECONDS_SHORT, procs:4},
+    //httpload: {parallels:50, timeout:BENCH_SECONDS_SHORT, procs:2},
+    httpload: {parallels:1, timeout:BENCH_SECONDS_SHORT, procs:2},
+    //buyer:    {parallels:25, timeout:BENCH_SECONDS_SHORT, procs:4},
+    buyer:    {parallels:1, timeout:BENCH_SECONDS_SHORT, procs:4},
     checker:  {parallels:1,  timeout:BENCH_SECONDS_SHORT, procs:1}
   },
   normal: {

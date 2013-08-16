@@ -1,8 +1,8 @@
 {
-    "testing": false,
+    "testing": true,
     "teams": [
         { "id": 1, "name": "local", "display":"TestTeam<br />localhost", "target_ip": "127.0.0.1", "target_port": 5000 },
-        { "id": 2, "name": "test",  "display":"TestTeam<br />Test Server", "target_ip": "125.6.159.11", "target_port": 80 }
+        { "id": 2, "name": "test",  "display":"TestTeam<br />Test Server", "target_ip": "192.168.10.10", "target_port": 80 }
     ],
     "users": [
         {"name":"manager","password":"foo","teams":[],"admin":true},
