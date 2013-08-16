@@ -1,12 +1,10 @@
 {
     "testing": true,
     "teams": [
-        { "id": 1, "name": "local", "display":"TestTeam<br />localhost", "target_ip": "127.0.0.1", "target_port": 5000 },
-        { "id": 2, "name": "test",  "display":"TestTeam<br />Test Server", "target_ip": "192.168.10.10", "target_port": 80 }
+        { "id": 1, "name": "test",  "display":"TestTeam<br />Test Server", "target_ip": "192.168.10.10", "target_port": 80 }
     ],
     "users": [
         {"name":"manager","password":"foo","teams":[],"admin":true},
-        {"name":"team1","password":"xxx","teams":[1]},
-        {"name":"team2","password":"yyy","teams":[2]}
+        {"name":"team1","password":"xxx","teams":[1]}
     ]
 }

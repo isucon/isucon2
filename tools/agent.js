@@ -3,6 +3,8 @@ var async = require('async'),
     http = require('http'),
     child = require('child_process');
 
+http.globalAgent.maxSockets = 30;
+
 var express = require('express'),
     app = express();
 

@@ -1,9 +1,9 @@
 CREATE DATABASE IF NOT EXISTS isumaster2 DEFAULT CHARACTER SET 'utf8';
 
-CREATE USER 'isumaster2'@'%' IDENTIFIED BY 'throwing';
-GRANT ALL ON isumaster2.* TO 'isumaster2'@'%';
-CREATE USER 'isumaster2'@'localhost' IDENTIFIED BY 'throwing';
-GRANT ALL ON isumaster2.* TO 'isumaster2'@'localhost';
+-- CREATE USER 'isumaster2'@'%' IDENTIFIED BY 'throwing';
+-- GRANT ALL ON isumaster2.* TO 'isumaster2'@'%';
+-- CREATE USER 'isumaster2'@'localhost' IDENTIFIED BY 'throwing';
+-- GRANT ALL ON isumaster2.* TO 'isumaster2'@'localhost';
 
 FLUSH PRIVILEGES;
 
