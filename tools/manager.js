@@ -4,6 +4,8 @@ var async = require('async'),
     fs = require('fs'),
     http = require('http');
 
+http.globalAgent.maxSockets = 30;
+
 var express = require('express'),
     app = express();
 
@@ -21,16 +23,16 @@ var TICKETS = 8192,
 var BENCH_SETTINGS = {
   testing: {
     starter:  {parallels:1,  timeout:30, procs:1},
-    //httpload: {parallels:50, timeout:BENCH_SECONDS_SHORT, procs:2},
-    httpload: {parallels:1, timeout:BENCH_SECONDS_SHORT, procs:2},
-    //buyer:    {parallels:25, timeout:BENCH_SECONDS_SHORT, procs:4},
-    buyer:    {parallels:1, timeout:BENCH_SECONDS_SHORT, procs:4},
+    //httpload: {parallels:50, timeout:BENCH_SECONDS_SHORT, procs:1},
+    httpload: {parallels:1, timeout:BENCH_SECONDS_SHORT, procs:1},
+    //buyer:    {parallels:25, timeout:BENCH_SECONDS_SHORT, procs:2},
+    buyer:    {parallels:1, timeout:BENCH_SECONDS_SHORT, procs:2},
     checker:  {parallels:1,  timeout:BENCH_SECONDS_SHORT, procs:1}
   },
   normal: {
     starter:  {parallels:1,  timeout:30, procs:1},
-    httpload: {parallels:50, timeout:BENCH_SECONDS_SHORT, procs:2},
-    buyer:    {parallels:25, timeout:BENCH_SECONDS_SHORT, procs:4},
+    httpload: {parallels:50, timeout:BENCH_SECONDS_SHORT, procs:1},
+    buyer:    {parallels:25, timeout:BENCH_SECONDS_SHORT, procs:2},
     checker:  {parallels:1,  timeout:BENCH_SECONDS_SHORT, procs:1}
   },
   restricted: {
@@ -263,6 +265,7 @@ app.post('/result', function(req,res){
       sessionid = req.body.sessionid,
       result = req.body.result;
   if (! runnings[benchid]) { res.send(404, 'Target benchid not found:' + benchid); return; }
+  if (! runnings[benchid].sessions[sessionid]) { res.send(404, 'Target sessionid not found:' + sessionid); return; }
   runnings[benchid].sessions[sessionid].result = result;
 
   res.send(200, 'OK');
@@ -403,9 +406,9 @@ function postBenchRequest(agent, benchid, sessionid, callback){
     headers: headers,
     method: 'POST'
   };
-  var timeouted = false;
+  var finished = false;
   var req = http.request(options, function(res){
-    if (timeouted) { return; }
+    finished = true;
     if (res.statusCode !== 200) {
       /* select other agent */
       callback({message:'agent returns error code:' + res.statusCode}); return;
@@ -417,7 +420,11 @@ function postBenchRequest(agent, benchid, sessionid, callback){
   req.on('error', function(err){
     callback({message:(err.message || 'request to agent failed with error:' + JSON.stringify(err))});
   });
-  req.setTimeout(BENCH_AGENT_TIMEOUT, function(){ timeouted = true; callback({message:'requeest to agent failed by timeout'}); });
+  req.on('timeout', function () {
+    if ( finished ) { return; }
+    req.abort();
+  });
+  req.setTimeout(BENCH_AGENT_TIMEOUT);
   req.end();
 };
 
@@ -436,9 +443,9 @@ function killBenchRequest(agent, sessionid, callback){
     headers: headers,
     method: 'POST'
   };
-  var timeouted = false;
+  var finished = false;
   var req = http.request(options, function(res){
-    if (timeouted) { return; }
+    finished = true;
     if (res.statusCode !== 200) {
       /* select other agent */
       callback({message:'agent returns error code:' + res.statusCode}); return;
@@ -448,7 +455,11 @@ function killBenchRequest(agent, sessionid, callback){
   req.on('error', function(err){
     callback({message:(err.message || 'request to agent failed with error:' + JSON.stringify(err))});
   });
-  req.setTimeout(BENCH_AGENT_TIMEOUT, function(){ timeouted = true; callback({message:'requeest to agent failed by timeout'}); });
+  req.on('timeout', function () {
+    if ( finished ) { return; }
+    req.abort();
+  });
+  req.setTimeout(BENCH_AGENT_TIMEOUT);
   req.end();
 };
 
@@ -467,6 +478,9 @@ function killRunningSessions(bench, callback){
 
       var agent = session.agent;
       return function(cb){
+        if (! agent) {
+          cb(null); return;
+        }
         killBenchRequest(agent, sid, function(err){
           if (err) { /* agent down or timeout....*/
             callback(null, {
