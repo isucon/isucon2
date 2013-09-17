@@ -7,7 +7,7 @@ var routes_index = require('./routes/index');
 var routes_admin = require('./routes/admin');
 
 if (cluster.isMaster) {
-    for (var i = 0; i < 2; i++) {
+    for (var i = 0; i < 4; i++) {
         cluster.fork();
     }
 } else {
