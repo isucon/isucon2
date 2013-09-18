@@ -22,12 +22,20 @@ proxy_cache_path /var/cache/nginx/static_file_cache levels=1:2 keys_zone=cache_s
 proxy_temp_path /var/cache/nginx/temp;
 
 upstream backend{
-  server isucon-app:8080;
+  server isucon-app:5000;
 }
+
+# memcashedの設定
+#upstream memcached {
+#	server 127.0.0.1:11211;
+#	keepalive 1000000;
+#}
 	
 server {
 	listen 80;
 	server_name _;
+
+
 	location / {
 		proxy_redirect off;
 
@@ -55,8 +63,29 @@ server {
 		proxy_set_header X-Forwarded-Server $host;
 		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 		proxy_pass http://backend;
-
+		
+		# ssi設定
+		#ssi on;
+		#ssi_silent_errors on;
+		#set $memcached_key $uri;
+		#memcached_pass     memcached;
+		#default_type       text/html;
+		#error_page 404 =200 @fallback;
+		#error_page 302 =302 @fallback;
+		#error_page 502 =502 @fallback;
 	}
+
+	location ~ ^/ticket/(.*)$ {
+		set $memcached_key t:$1;
+		memcached_pass localhost:11211;
+		default_type text/html;
+		error_page	404 502 = @fallback;
+	}
+
+	location @fallback {
+		proxy_pass	http://backend/ticket/$1;
+	}
+
 	#listen   80; ## listen for ipv4; this line is default and implied
 	#listen   [::]:80 default_server ipv6only=on; ## listen for ipv6
 
