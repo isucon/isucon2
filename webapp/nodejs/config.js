@@ -2,10 +2,10 @@ module.exports = (function () {
     var common = require('./../config/common.' + (process.env.ISUCON_ENV || 'local'));
     return {
         database: {
-            host:"192.168.10.12" ,
+            host:"54.248.72.21" ,
             port: "3306",
-            user: "root",
-            password: "",
+            user: "isucon2app",
+            password: "isunageruna",
             database: "isucon2"
         }
     };
