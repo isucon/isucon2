@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS isucon2.order_request (
   KEY `member_order` (`member_id`)
 ) ENGINE=MyISAM;
 
-CREATE TABLE `recent_sold` (
+CREATE TABLE IF NOT EXISTS isucon2.recent_sold (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `seat_id` int(10) unsigned NOT NULL,
   `order_id` int(10) unsigned DEFAULT NULL,
