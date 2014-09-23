@@ -2,14 +2,23 @@ require 'sinatra/base'
 require 'slim'
 require 'json'
 require 'mysql2'
-require "rack-lineprof"
+require 'net/http'
 
 if ENV['RACK_ENV'] != 'production'
   require 'pry'
+  require "rack-lineprof"
+end
+
+module Net
+  class HTTP::Purge < HTTPRequest
+        METHOD='PURGE'
+        REQUEST_HAS_BODY = false
+        RESPONSE_HAS_BODY = true
+  end
 end
 
 class Isucon2App < Sinatra::Base
-  $stdout.sync = true
+  $stdout.sync = true if development?
   set :slim, :pretty => true, :layout => true
 
   if development?
@@ -23,6 +32,17 @@ class Isucon2App < Sinatra::Base
 
     def production?
       ENV['RACK_ENV'] == 'production'
+    end
+
+    def purge_cache(uri)
+      uri = uri.is_a?(URI) ? uri : URI.parse(uri)
+      Net::HTTP.start(uri.host,uri.port) do |http|
+        presp = http.request Net::HTTP::Purge.new uri.request_uri
+        $stdout.puts "#{presp.code}: #{presp.message}" if development?
+        unless (200...400).include?(presp.code.to_i)
+          $stdout.puts "A problem occurred. PURGE was not performed: #{uri.request_uri}"
+        end
+      end
     end
 
     def connection
@@ -126,6 +146,14 @@ class Isucon2App < Sinatra::Base
         "SELECT seat_id FROM stock WHERE order_id = #{ order_id } LIMIT 1",
       ).first['seat_id']
       mysql.query('COMMIT')
+
+      ticket_id = mysql.query(
+        "SELECT ticket_id FROM variation WHERE id = #{ mysql.escape(params[:variation_id]) } LIMIT 1",
+      ).first['ticket_id']
+
+      purge_cache('http://localhost/')
+      purge_cache("http://localhost/ticket/#{ticket_id}")
+
       slim :complete, :locals => { :seat_id => seat_id, :member_id => params[:member_id] }
     else
       mysql.query('ROLLBACK')
