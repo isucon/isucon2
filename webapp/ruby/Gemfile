@@ -10,4 +10,5 @@ gem 'rack-lineprof', github: 'kainosnoema/rack-lineprof'
 group :development do
   # run "bundle exec shotgun" on development
   gem 'shotgun'
+  gem 'pry'
 end
