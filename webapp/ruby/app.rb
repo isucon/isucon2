@@ -110,14 +110,10 @@ class Isucon2App < Sinatra::Base
        INNER JOIN artist a ON t.artist_id = a.id
        WHERE t.id = #{ params[:ticketid] } LIMIT 1",
     ).first
-    variations = mysql.query(
-      "SELECT id, name FROM variation WHERE ticket_id = #{ ticket['id'] } ORDER BY id",
-    )
+
+    variations = mysql.query("SELECT id, name FROM variation WHERE ticket_id = #{ ticket['id'] } ORDER BY id")
     variations.each do |variation|
-      variation["count"] = mysql.query(
-        "SELECT COUNT(*) AS cnt FROM stock
-         WHERE variation_id = #{ variation['id'] } AND order_id IS NULL",
-      ).first["cnt"]
+      variation["count"] = mysql.query("SELECT COUNT(*) AS cnt FROM stock WHERE variation_id = #{ variation['id'] } AND order_id IS NULL").first["cnt"]
       variation["stock"] = {}
 
       stocks = mysql.query("SELECT seat_id, order_id FROM stock WHERE variation_id = #{ variation['id'] }").to_a
@@ -125,9 +121,9 @@ class Isucon2App < Sinatra::Base
         variation["stock"][stock["seat_id"]] = stock["order_id"]
       end
     end
-    slim :ticket, :locals => {
-      :ticket     => ticket,
-      :variations => variations,
+    slim :ticket, locals: {
+      ticket: ticket,
+      variations: variations,
     }
   end
 
