@@ -179,8 +179,8 @@ class Isucon2App < Sinatra::Base
         "SELECT ticket_id FROM variation WHERE id = #{ mysql.escape(params[:variation_id]) } LIMIT 1",
       ).first['ticket_id']
 
-      purge_cache('http://localhost/')
-      purge_cache("http://localhost/ticket/#{ticket_id}")
+      purge_cache('http://127.0.0.1/')
+      purge_cache("http://127.0.0.1/ticket/#{ticket_id}")
 
       slim :complete, :locals => { :seat_id => seat_id, :member_id => params[:member_id] }
     else
