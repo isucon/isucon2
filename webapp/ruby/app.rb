@@ -40,7 +40,9 @@ class Isucon2App < Sinatra::Base
         presp = http.request Net::HTTP::Purge.new uri.request_uri
         $stdout.puts "#{presp.code}: #{presp.message}" if development?
         unless (200...400).include?(presp.code.to_i)
-          $stdout.puts "A problem occurred. PURGE was not performed: #{uri.request_uri}"
+          $stdout.puts "A problem occurred. PURGE was not performed(#{presp.code.to_i}): #{uri.request_uri}"
+        else
+          $stdout.puts "Cache purged (#{presp.code.to_i}): #{uri.request_uri}" if development?
         end
       end
     end
