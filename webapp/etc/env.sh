@@ -1,7 +1,8 @@
 #!/bin/sh
 export PATH=$HOME/.nodebrew/current/bin:$PATH
-source ~/perl5/perlbrew/etc/bashrc
-[[ -s "$HOME/.pythonbrew/etc/bashrc" ]] && source "$HOME/.pythonbrew/etc/bashrc"
+export PATH="$PERL_PATH:$RUBY_PATH:$PYTHON_PATH:$NODE_PATH:/usr/local/go/bin:$PATH"
+# source ~/perl5/perlbrew/etc/bashrc
+# [[ -s "$HOME/.pythonbrew/etc/bashrc" ]] && source "$HOME/.pythonbrew/etc/bashrc"
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 

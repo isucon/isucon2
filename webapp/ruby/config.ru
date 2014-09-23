@@ -1,4 +1,5 @@
 require './app'
+require "newrelic_rpm"
 
 if defined?(Unicorn)
   require 'unicorn/oob_gc'
