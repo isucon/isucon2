@@ -3,7 +3,10 @@ require 'slim'
 require 'json'
 require 'mysql2'
 require "rack-lineprof"
-require 'pry'
+
+if development?
+  require 'pry'
+end
 
 class Isucon2App < Sinatra::Base
   $stdout.sync = true
