@@ -2,10 +2,13 @@ require 'sinatra/base'
 require 'slim'
 require 'json'
 require 'mysql2'
+require "rack-lineprof"
 
 class Isucon2App < Sinatra::Base
   $stdout.sync = true
   set :slim, :pretty => true, :layout => true
+
+  use Rack::Lineprof, profile: "app.rb"
 
   helpers do
     def connection
