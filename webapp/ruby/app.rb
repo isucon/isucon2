@@ -111,7 +111,7 @@ class Isucon2App < Sinatra::Base
        WHERE t.id = #{ params[:ticketid] } LIMIT 1",
     ).first
 
-    variations = mysql.query("SELECT id, name FROM variation WHERE ticket_id = #{ ticket['id'] } ORDER BY id")
+    variations = mysql.query("SELECT id, name FROM variation WHERE ticket_id = #{ ticket['id'] } ORDER BY id").to_a
     variations.each do |variation|
       variation["count"] = mysql.query("SELECT COUNT(*) AS cnt FROM stock WHERE variation_id = #{ variation['id'] } AND order_id IS NULL").first["cnt"]
       variation["stock"] = {}
