@@ -17,7 +17,6 @@ class Isucon2App < Sinatra::Base
     end
 
     def production?
-      p ENV['RACK_ENV']
       ENV['RACK_ENV'] == 'production'
     end
 
@@ -51,6 +50,7 @@ class Isucon2App < Sinatra::Base
   # main
 
   get '/' do
+    p ENV['RACK_ENV']
     mysql = connection
     artists = mysql.query("SELECT * FROM artist ORDER BY id")
     slim :index, :locals => {
