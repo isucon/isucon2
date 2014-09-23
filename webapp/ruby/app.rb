@@ -64,14 +64,42 @@ class Isucon2App < Sinatra::Base
 
     def recent_sold
       mysql = connection
-      mysql.query(
+      recent_sold = mysql.query('SELECT seat_id, a_name, t_name, v_name FROM recent_sold ORDER BY order_id DESC LIMIT 10')
+
+      if recent_sold.size > 0
+        recent_sold
+      else
+        update_recent_sold
+      end
+    end
+
+    def update_recent_sold
+      mysql = connection
+      recent_sold = mysql.query(
         'SELECT stock.seat_id, variation.name AS v_name, ticket.name AS t_name, artist.name AS a_name FROM stock
            JOIN variation ON stock.variation_id = variation.id
            JOIN ticket ON variation.ticket_id = ticket.id
            JOIN artist ON ticket.artist_id = artist.id
          WHERE order_id IS NOT NULL
          ORDER BY order_id DESC LIMIT 10',
+      ).to_a
+
+      values = recent_sold.map { |data|
+        %Q{('#{data["seat_id"]}',#{data["order_id"] ? data["order_id"] : "NULL" },'#{data["a_name"]}','#{data["t_name"]}','#{data["v_name"]}')}
+      }.join(",")
+      mysql.query(
+        "INSERT INTO recent_sold (seat_id, order_id, a_name, t_name, v_name)
+         VALUES #{values}
+         ON DUPLICATE KEY UPDATE
+           recent_sold.seat_id=VALUES(seat_id),
+           recent_sold.order_id=VALUES(order_id),
+           recent_sold.a_name=VALUES(a_name),
+           recent_sold.t_name=VALUES(t_name),
+           recent_sold.v_name=VALUES(v_name)
+        "
       )
+
+      recent_sold
     end
   end
 
@@ -141,6 +169,8 @@ class Isucon2App < Sinatra::Base
        ORDER BY RAND() LIMIT 1",
     )
     if mysql.affected_rows > 0
+      update_recent_sold
+
       seat_id = mysql.query(
         "SELECT seat_id FROM stock WHERE order_id = #{ order_id } LIMIT 1",
       ).first['seat_id']
