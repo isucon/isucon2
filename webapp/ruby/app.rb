@@ -9,7 +9,9 @@ class Isucon2App < Sinatra::Base
   $stdout.sync = true
   set :slim, :pretty => true, :layout => true
 
-  # use Rack::Lineprof, profile: "views/*|app.rb" if production?
+  if development?
+    use Rack::Lineprof, profile: "views/*|app.rb"
+  end
 
   helpers do
     def development?
@@ -50,7 +52,6 @@ class Isucon2App < Sinatra::Base
   # main
 
   get '/' do
-    p ENV['RACK_ENV']
     mysql = connection
     artists = mysql.query("SELECT * FROM artist ORDER BY id")
     slim :index, :locals => {
