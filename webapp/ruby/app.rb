@@ -4,7 +4,7 @@ require 'json'
 require 'mysql2'
 require "rack-lineprof"
 
-if development?
+if ENV['RACK_ENV'] != 'production'
   require 'pry'
 end
 
