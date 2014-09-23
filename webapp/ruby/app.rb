@@ -99,10 +99,9 @@ class Isucon2App < Sinatra::Base
          WHERE variation_id = #{ variation['id'] } AND order_id IS NULL",
       ).first["cnt"]
       variation["stock"] = {}
-      mysql.query(
-        "SELECT seat_id, order_id FROM stock
-         WHERE variation_id = #{ variation['id'] }",
-      ).each do |stock|
+
+      stocks = mysql.query("SELECT seat_id, order_id FROM stock WHERE variation_id = #{ variation['id'] }").to_a
+      stocks.each do |stock|
         variation["stock"][stock["seat_id"]] = stock["order_id"]
       end
     end
