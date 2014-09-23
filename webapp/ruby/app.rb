@@ -65,16 +65,16 @@ class Isucon2App < Sinatra::Base
   get '/artist/:artistid' do
     mysql = connection
     artist  = mysql.query(
-      "SELECT id, name FROM artist WHERE id = #{ mysql.escape(params[:artistid]) } LIMIT 1",
+      "SELECT id, name FROM artist WHERE id = #{ params[:artistid] } LIMIT 1",
     ).first
     tickets = mysql.query(
-      "SELECT id, name FROM ticket WHERE artist_id = #{ mysql.escape(artist['id'].to_s) } ORDER BY id",
+      "SELECT id, name FROM ticket WHERE artist_id = #{ artist['id'] } ORDER BY id",
     )
     tickets.each do |ticket|
       ticket["count"] = mysql.query(
         "SELECT COUNT(*) AS cnt FROM variation
          INNER JOIN stock ON stock.variation_id = variation.id
-         WHERE variation.ticket_id = #{ mysql.escape(ticket['id'].to_s) } AND stock.order_id IS NULL",
+         WHERE variation.ticket_id = #{ ticket['id'] } AND stock.order_id IS NULL",
       ).first["cnt"]
     end
     slim :artist, :locals => {
@@ -88,20 +88,20 @@ class Isucon2App < Sinatra::Base
     ticket = mysql.query(
       "SELECT t.*, a.name AS artist_name FROM ticket t
        INNER JOIN artist a ON t.artist_id = a.id
-       WHERE t.id = #{ mysql.escape(params[:ticketid]) } LIMIT 1",
+       WHERE t.id = #{ params[:ticketid] } LIMIT 1",
     ).first
     variations = mysql.query(
-      "SELECT id, name FROM variation WHERE ticket_id = #{ mysql.escape(ticket['id'].to_s) } ORDER BY id",
+      "SELECT id, name FROM variation WHERE ticket_id = #{ ticket['id'] } ORDER BY id",
     )
     variations.each do |variation|
       variation["count"] = mysql.query(
         "SELECT COUNT(*) AS cnt FROM stock
-         WHERE variation_id = #{ mysql.escape(variation['id'].to_s) } AND order_id IS NULL",
+         WHERE variation_id = #{ variation['id'] } AND order_id IS NULL",
       ).first["cnt"]
       variation["stock"] = {}
       mysql.query(
         "SELECT seat_id, order_id FROM stock
-         WHERE variation_id = #{ mysql.escape(variation['id'].to_s) }",
+         WHERE variation_id = #{ variation['id'] }",
       ).each do |stock|
         variation["stock"][stock["seat_id"]] = stock["order_id"]
       end
@@ -115,16 +115,16 @@ class Isucon2App < Sinatra::Base
   post '/buy' do
     mysql = connection
     mysql.query('BEGIN')
-    mysql.query("INSERT INTO order_request (member_id) VALUES ('#{ mysql.escape(params[:member_id]) }')")
+    mysql.query("INSERT INTO order_request (member_id) VALUES ('#{ params[:member_id] }')")
     order_id = mysql.last_id
     mysql.query(
-      "UPDATE stock SET order_id = #{ mysql.escape(order_id.to_s) }
-       WHERE variation_id = #{ mysql.escape(params[:variation_id]) } AND order_id IS NULL
+      "UPDATE stock SET order_id = #{ order_id }
+       WHERE variation_id = #{ params[:variation_id] } AND order_id IS NULL
        ORDER BY RAND() LIMIT 1",
     )
     if mysql.affected_rows > 0
       seat_id = mysql.query(
-        "SELECT seat_id FROM stock WHERE order_id = #{ mysql.escape(order_id.to_s) } LIMIT 1",
+        "SELECT seat_id FROM stock WHERE order_id = #{ order_id } LIMIT 1",
       ).first['seat_id']
       mysql.query('COMMIT')
       slim :complete, :locals => { :seat_id => seat_id, :member_id => params[:member_id] }
