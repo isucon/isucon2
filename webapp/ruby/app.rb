@@ -12,6 +12,14 @@ class Isucon2App < Sinatra::Base
   use Rack::Lineprof, profile: "views/*|app.rb"
 
   helpers do
+    def development?
+      !production?
+    end
+
+    def production?
+      ENV['RACK_ENV'] != 'production'
+    end
+
     def connection
       return @connection if defined?(@connection)
 
