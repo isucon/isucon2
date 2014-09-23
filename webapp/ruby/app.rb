@@ -17,7 +17,7 @@ class Isucon2App < Sinatra::Base
     end
 
     def production?
-      ENV['RACK_ENV'] != 'production'
+      ENV['RACK_ENV'] == 'production'
     end
 
     def connection
