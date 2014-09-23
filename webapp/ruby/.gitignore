@@ -1,5 +1,6 @@
 vendor/bundle/*
 .bundle/
 
-./log/*
-./tmp/*
+log/*
+tmp/*
+
