@@ -88,15 +88,7 @@ class Isucon2App < Sinatra::Base
         %Q{('#{data["seat_id"]}',#{data["order_id"] ? data["order_id"] : "NULL" },'#{data["a_name"]}','#{data["t_name"]}','#{data["v_name"]}')}
       }.join(",")
       mysql.query(
-        "INSERT INTO recent_sold (seat_id, order_id, a_name, t_name, v_name)
-         VALUES #{values}
-         ON DUPLICATE KEY UPDATE
-           recent_sold.seat_id=VALUES(seat_id),
-           recent_sold.order_id=VALUES(order_id),
-           recent_sold.a_name=VALUES(a_name),
-           recent_sold.t_name=VALUES(t_name),
-           recent_sold.v_name=VALUES(v_name)
-        "
+        "INSERT INTO recent_sold (seat_id, order_id, a_name, t_name, v_name) VALUES #{values} ON DUPLICATE KEY UPDATE recent_sold.seat_id=VALUES(seat_id), recent_sold.order_id=VALUES(order_id), recent_sold.a_name=VALUES(a_name), recent_sold.t_name=VALUES(t_name), recent_sold.v_name=VALUES(v_name)"
       )
 
       recent_sold
