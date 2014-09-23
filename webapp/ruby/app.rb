@@ -13,8 +13,10 @@ class Isucon2App < Sinatra::Base
 
   helpers do
     def connection
+      return @connection if defined?(@connection)
+
       config = JSON.parse(IO.read(File.dirname(__FILE__) + "/../config/common.#{ ENV['ISUCON_ENV'] || 'local' }.json"))['database']
-      Mysql2::Client.new(
+      @connection = Mysql2::Client.new(
         :host => config['host'],
         :port => config['port'],
         :username => config['username'],
