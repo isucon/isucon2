@@ -9,7 +9,7 @@ class Isucon2App < Sinatra::Base
   $stdout.sync = true
   set :slim, :pretty => true, :layout => true
 
-  use Rack::Lineprof, profile: "views/*|app.rb" if production?
+  # use Rack::Lineprof, profile: "views/*|app.rb" if production?
 
   helpers do
     def development?
@@ -17,6 +17,7 @@ class Isucon2App < Sinatra::Base
     end
 
     def production?
+      p ENV['RACK_ENV']
       ENV['RACK_ENV'] == 'production'
     end
 
