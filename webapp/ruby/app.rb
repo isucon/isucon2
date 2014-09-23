@@ -9,7 +9,7 @@ class Isucon2App < Sinatra::Base
   $stdout.sync = true
   set :slim, :pretty => true, :layout => true
 
-  use Rack::Lineprof, profile: "views/*|app.rb"
+  use Rack::Lineprof, profile: "views/*|app.rb" if production?
 
   helpers do
     def development?
