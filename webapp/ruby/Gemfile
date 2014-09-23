@@ -6,9 +6,9 @@ gem 'mysql2',  '0.3.11'
 gem 'unicorn', '4.4.0'
 gem "newrelic_rpm"
 gem 'rack-lineprof', github: 'kainosnoema/rack-lineprof'
+gem 'pry'
 
 group :development do
   # run "bundle exec shotgun" on development
   gem 'shotgun'
-  gem 'pry'
 end
