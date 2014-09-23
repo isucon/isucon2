@@ -20,6 +20,7 @@ end
 class Isucon2App < Sinatra::Base
   $stdout.sync = true if development?
   set :slim, :pretty => true, :layout => true
+  set :port, 3000 if development?
 
   if development?
     use Rack::Lineprof, profile: "views/*|app.rb"
