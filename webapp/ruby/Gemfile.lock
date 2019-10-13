@@ -4,8 +4,8 @@ GEM
     json (1.7.5)
     kgio (2.7.4)
     mysql2 (0.3.11)
-    rack (1.4.1)
-    rack-protection (1.2.0)
+    rack (1.6.11)
+    rack-protection (1.5.5)
       rack
     raindrops (0.10.0)
     shotgun (0.9)
