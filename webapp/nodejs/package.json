@@ -11,7 +11,7 @@
   "dependencies": {
     "express": "3.0.0",
     "jade": "0.27.6",
-    "mysql": "0.9.6",
+    "mysql": "2.17.1",
     "async": "0.1.22",
     "moment": "1.7.2"
   }
